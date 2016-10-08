@@ -1,11 +1,12 @@
 -module(pybot).
 -export([start/0, start/3]).
--export([get_move/1, update/2, display/3, stop/1]).
+-export([get_move/1, update/2, display/3, notify/2, stop/1]).
 
 -record(state,  {board = board,
                  max_time = 1000,  % milliseconds
                  exploration_factor = 1.4,
-                 game_states = []
+                 game_states = [],
+                 from
                  }).
 
 % APIs
@@ -25,6 +26,9 @@ display(Pid, GameState, Move) ->
 
 get_move(Pid) ->
     call(Pid, get_move).
+
+notify(Pid, Info) ->
+    call(Pid, {notify, Info}).  
     
 stop(Pid) ->
     call(Pid, stop).    
@@ -32,7 +36,6 @@ stop(Pid) ->
 %%
 init([Board, MaxTime, ExplorationFactor]) ->
     {ok, Ppy} = python:start([{python_path,"../src/python"},{python, "python2"}]),
-    python:call(Ppy,pybot,init,[MaxTime]),
     State = #state{board = Board,
                      max_time = MaxTime,
                      exploration_factor = ExplorationFactor
@@ -42,7 +45,7 @@ init([Board, MaxTime, ExplorationFactor]) ->
 loop(State, Ppy) ->
     receive
         {call, Ref, From, Msg} ->
-            case handle_call(Msg, State, Ppy) of
+            case handle_call(Msg, State#state{from = From}, Ppy) of
                 {reply, Reply, NewState} ->
                     From ! {Ref, Reply},
                     loop(NewState, Ppy);
@@ -61,17 +64,28 @@ call(Pid, Msg) ->
 
 handle_call({update, GameState}, State=#state{game_states=GSs}, Ppy) -> 
     {reply, ok, State#state{game_states=[GameState | GSs]}};
-handle_call({display, GameState, Move}, State=#state{board=Board}, Ppy) ->
+handle_call({display, GameState, Move}, State=#state{board=Board, max_time=MaxTime}, Ppy) ->
     case Move of
         none ->
-            body;
+            python:call(Ppy,pybot,init,[MaxTime]);
         _ ->
             python:call(Ppy, pybot, set_move, [Move])
     end,
     io:format("player move ~p~n", [Move]),
     {reply, ok, State};
-handle_call(get_move, State=#state{board=Board, game_states=GSs}, Ppy) ->
-    NextMove = python:call(Ppy, pybot, get_move, []),
+handle_call({notify, _Info}, State, _) ->
+    {reply, ok, State};
+handle_call(get_move, State=#state{board=Board, game_states=GSs, from = From}, Ppy) ->
+    {NextMove, Msg_time, Msg_pro} = python:call(Ppy, pybot, get_move, []),
+    GS = hd(GSs),
+    CurrentPlayerID = Board:current_player(GS),
+    notify_room(From, CurrentPlayerID, [Msg_time]),
+    notify_room(From, CurrentPlayerID, [Msg_pro]),
+    From ! {play, NextMove},
     {reply, {ok, NextMove}, State};
-handle_call(stop, _State, _) ->
+handle_call(stop, _State, Ppy) ->
+    python:stop(Ppy),
     stop.
+
+notify_room(PlayerClient, PlayerID, Info) ->
+	PlayerClient ! {notify, PlayerID, lists:flatten(Info)}.

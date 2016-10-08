@@ -3,174 +3,44 @@
 	<head> 
 		<meta charset="utf-8"/> 
 		<title>AlphaTTT 游戏大厅</title> 
+		<link rel="shortcut icon" href="image/lecheng.png" />
 		<link rel="stylesheet" type="text/css" href="css/hall.css"> 
 		<script src="jsolait/jsolait.js"></script>	
 		<script src="jquery/jquery.min.js"></script>
 		<script src="js/jquery.cookie.js"></script>
-		<script src="js/hall.js"></script>
+		<script src="js/gamehall.js"></script>
 	</head> 
-	<body> 		
-		<table id="container">
+	<body> 	 	
+		<table id="container" cellpadding="40px">
 			<tr>
-				<td>
+				<td style="padding-right: 0px;">
+				<div style="position:absolute;width:100%;height:100%;top:0px;left:0px;z-index:-1"><img src="image/hallbg2.png" width="100%" height="100%"></div>
+					<table id="gamehalltb"  class="gamehall">									
+					</table>				
+
+				</td>
+				<td style="padding-left: 0px">
 					<table>
+						<tr><td><font color="white" style="font-weight:bold">排行榜</font></td></tr>							
 						<tr>
-							<td>
-								<table id="gamehall">
-									<tr>			
-										<td>
-											<table>
-												<tr>
-													<td class="chessplayer">
-														<input type="image" src="img/qq.png" />
-													</td>
-													<td class="checkdeskimg">
-														<img class="desk" src="img/table.jpg">
-													</td>
-													<td class="chessplayer">
-														<input type="image" src="img/qq.png" />
-													</td>
-												</tr>
-											</table>
-										</td>			
-										<td>
-											<table>
-												<tr>
-													<td class="chessplayer">
-														<input type="image" src="img/qq.png" />
-													</td>
-													<td class="checkdeskimg">
-														<img class="desk" src="img/table.jpg">
-													</td>
-													<td class="chessplayer">
-														<input type="image" src="img/qq.png" />
-													</td>
-												</tr>
-											</table>
-										</td>										
-									</tr>
-									<tr>			
-										<td>
-											<table>
-												<tr>
-													<td class="chessplayer">
-														<input type="image" src="img/qq.png" />
-													</td>
-													<td class="checkdeskimg">
-														<img class="desk" src="img/table.jpg">
-													</td>
-													<td class="chessplayer">
-														<input type="image" src="img/qq.png" />
-													</td>
-												</tr>
-											</table>
-										</td>			
-										<td>
-											<table>
-												<tr>
-													<td class="chessplayer">
-														<input type="image" src="img/qq.png" />
-													</td>
-													<td class="checkdeskimg">
-														<img class="desk" src="img/table.jpg">
-													</td>
-													<td class="chessplayer">
-														<input type="image" src="img/qq.png" />
-													</td>
-												</tr>
-											</table>
-										</td>										
-									</tr>
-									<tr>			
-										<td>
-											<table>
-												<tr>
-													<td class="chessplayer">
-														<input type="image" src="img/qq.png" />
-													</td>
-													<td class="checkdeskimg">
-														<img class="desk" src="img/table.jpg">
-													</td>
-													<td class="chessplayer">
-														<input type="image" src="img/qq.png" />
-													</td>
-												</tr>
-											</table>
-										</td>			
-										<td>
-											<table>
-												<tr>
-													<td class="chessplayer">
-														<input type="image" src="img/qq.png" />
-													</td>
-													<td class="checkdeskimg">
-														<img class="desk" src="img/table.jpg">
-													</td>
-													<td class="chessplayer">
-														<input type="image" src="img/qq.png" />
-													</td>
-												</tr>
-											</table>
-										</td>										
-									</tr>
-									<tr>			
-										<td>
-											<table>
-												<tr>
-													<td class="chessplayer">
-														<input type="image" src="img/qq.png" />
-													</td>
-													<td class="checkdeskimg">
-														<img class="desk" src="img/table.jpg">
-													</td>
-													<td class="chessplayer">
-														<input type="image" src="img/qq.png" />
-													</td>
-												</tr>
-											</table>
-										</td>			
-										<td>
-											<table>
-												<tr>
-													<td class="chessplayer">
-														<input type="image" src="img/qq.png" />
-													</td>
-													<td class="checkdeskimg">
-														<img class="desk" src="img/table.jpg">
-													</td>
-													<td class="chessplayer">
-														<input type="image" src="img/qq.png" />
-													</td>
-												</tr>
-											</table>
-										</td>
-									</tr>			、
-								</table>							
-							</td>
-							<td>
-								<table id="ranklist">
-									<tr>
-										<th>积分</th>
-										<th>姓名</th>
-										<th>类型</th>
-									</tr>
-									<tr>
-										<td>100</td>
-										<td>kevin</td>
-										<td>human</td>
-									</tr>									
+							<td height="200px" valign="top">
+								<table id="ranklist" class="datalist">
+								<tr><th>排名</th><th>积分</th><th>昵称</th><th>类型</th></tr>
 								</table>
 							</td>						
+						</tr>
+						<tr><td></td></tr>
+						<tr><td><font color="white" style="font-weight:bold">在线用户</font></td></tr>
+						<tr>
+							<td height="300px" valign="top">
+								<table id="onlinelist" class="datalist">
+								<tr><th>登录流水号</th><th>昵称</th><th>房间号<th></tr>
+								</table>
+							</td>
 						</tr>
 					</table>
 				</td>
 			</tr>
-			<tr>
-				<td>
-					<table class="onlineuser">
-					</table>
-				</td>
-			</tr>
-		</table>			
-	</body> 
+		</table>	
+		</body> 
 </html>

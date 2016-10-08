@@ -2,10 +2,10 @@
 <html> 
 <head> 
 	<meta charset="utf-8"/> 
-	<title>Ultimate Tic-Tac-Toe</title> 
-	<link  rel="shortcut icon" href="image/lecheng.png"/>
-	<link rel="stylesheet" type="text/css" href="css/ttt.css"> 
-	<link rel="stylesheet" type="text/css" href="css/chatstyle.css"> 
+	<title id="title">Ultimate Tic Tac Toe</title> 
+	<link rel="shortcut icon" href="image/lecheng.png"/>
+	<link rel="stylesheet" type="text/css" href="css/ttt.css" /> 
+	<link rel="stylesheet" type="text/css" href="css/chatstyle.css" /> 
 	<script src="jsolait/jsolait.js"></script>	
     <script src="js/ttt.js"></script>  
 </head> 
@@ -13,11 +13,17 @@
 	<table>
 		<tr>
 			<td>
+				<div id="margin"></div>
+			</td>
+			<td>
 				<table class="container">
 					<tr>
 						<td>
 							<table class="heading">
-								<tr><td>Ultimate Tic-Tac-Toe</td></tr>				  			
+								<tr>
+									<td></td>
+									<td></td>
+								</tr>				  			
 							</table>
 						</td>
 					<tr>
@@ -174,10 +180,10 @@
 						<td>
 							<table class="botton">
 								<tr>
-									<td id="start_game" class="btns">开始</td>
-									<td id="start_robot" class="btns">机器对弈</td>
-									<td id="start_witness" class="btns">观战</td>
-									<td id="start_hall" class="btns">大厅</td>
+									<td><div id="start_game" class="btns_begin">我入座</div></td>								
+									<td><div id="start_rule" class="btns_begin">规则</div></td>								
+									<td><div id="start_hall" class="btns_begin">大厅</div></td>								
+									<td><div id="start_robot" class="btns_begin">AI入座</div></td>
 								</tr>
 							</table>
 						</td>
@@ -185,10 +191,10 @@
 				</table>
 			</td>
 			<td>
-				<table class="char-room">
+				<table class="chat-room">
 					<tr>
 						<td>
-							<ul class="chat-thread" id="result">									
+							<ul class="chat-thread" id="chat-thread-result">									
 							</ul>	
 						</td>
 					</tr>

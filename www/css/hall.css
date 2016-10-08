@@ -1,42 +1,60 @@
 body {  
       font-family: "微软雅黑";  
-      color: white;  
+      color: blue;  
+      background: #95caca;
       text-align: center;
 	  padding: 0;
 	  margin: 0;
-	  background: -moz-linear-gradient(-45deg, #183850 0, #183850 25%, #192c46 50%, #22254c 75%, #22254c 100%);
-	  background: -webkit-linear-gradient(-45deg, #183850 0, #183850 25%, #192c46 50%, #22254c 75%, #22254c 100%);
-	  background-repeat: no-repeat;
-	  background-attachment: fixed;	
 }  
+#container1 {
+	width: 860px;
+	position: absolute;
+    text-align: center;
+	left: 7%;
+}
 
 #container {
 	width: 800px;
+	position: absolute;
+    text-align: center;
+	left: 5%;
+	top:30px;
 }
 
-#gamehall {
-	width: 70%;	
-    background: #66b3ff; 	
-}
   
 td.chessplayer {
  width:40px;
  height:40px;	
- padding:25px;
+ padding:10px;
+ background: url(../image/pep.png) fixed center center;
 }
 
 td.checkdeskimg {
  width:60px;
  height:60px;	
- padding:25px;	
+ padding:15px;	
 }
 
-#ranklist {
+.datalist {
  width:300px;
+ color:white;
  background: green; 
+}
+
+.gamehall {
+    background: #FFFFFF;
+	opacity:0.85; 
 }
 
 .onlineuser {
  height:200px;	
 }
   
+td.tight {
+ padding:15px;
+}
+
+tr.over td {
+    background:#ff8040;  /*这个将是鼠标高亮行的背景background:#bcd4ec色*/
+	cursor: pointer;
+}

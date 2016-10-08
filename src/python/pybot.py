@@ -1,13 +1,16 @@
 # -*- coding: UTF-8 -*-
 import time
 import random
-import copy
+import math
+
 
 from board import Board
 
 cal_time = 1
 board = None
 tree = None
+
+# ==== interfaces ====
 
 
 def init(max_time):
@@ -25,10 +28,11 @@ def set_move(move):
 
 
 def get_move():
-    move = tree.get_move(board)
+    move, msg_time, msg_pro = tree.get_move(board)
     print "pybot move: ", move
     board.display()
-    return move
+    return move, msg_time, msg_pro
+# =================
 
 
 class TreeSearch(object):
@@ -39,8 +43,26 @@ class TreeSearch(object):
     def __random_choice(self, legal_moves, _):
         return random.choice(legal_moves)
 
+    def __ucb1_choice(self, legal_moves, board):
+        EF = 1.4
+        node = self.tree.get(board.get_board())
+        if node is None or node["total"] < len(legal_moves) * 5:
+            return self.__random_choice(legal_moves, board)
+        logTotal = math.log(node["total"])
+        selected = {"move": None, "cal": 0}
+        for _move in legal_moves:
+            _board = Board(board)
+            _board.move(_move)
+            node = self.tree.get(_board.get_board())
+            if node is None:
+                return self.__random_choice(legal_moves, board)
+            cal = node["per"] + EF * math.sqrt(logTotal / node["total"])
+            if cal >= selected["cal"]:
+                selected = {"move": _move, "cal": cal}
+        return selected["move"]
+
     def __choice(self, legal_moves, board):
-        return self.__random_choice(legal_moves, board)
+        return self.__ucb1_choice(legal_moves, board)
 
     def get_move(self, board):
         paras = {"begin": time.time(), "num": 0, "time": 0}
@@ -54,11 +76,13 @@ class TreeSearch(object):
             paras["time"] = time.time() - paras["begin"]
             if paras["time"] > cal_time:
                 break
-        print "== calculate %d paths using %f seconds ==" % (paras["num"], paras["time"])
-        return self.__search_tree(board, legal_moves)
+        msg_time = "== calculate %d paths using %f seconds ==" % (paras["num"], paras["time"])
+        print msg_time
+        move, msg_pro = self.__search_tree(board, legal_moves)
+        return move, msg_time, msg_pro
 
     def __tree_path(self, board, legal_moves):
-        _board = copy.deepcopy(board)
+        _board = Board(board)
         _legal_moves = legal_moves
         move_trace = []
         while True:
@@ -78,13 +102,14 @@ class TreeSearch(object):
             try:
                 node = self.tree[item]
             except Exception:
-                self.tree[item] = {"win": 0, "total": 0}
+                self.tree[item] = {"win": 0, "total": 0, "per": 0}
                 node = self.tree[item]
             node["win"] += inc["win"]
             node["total"] += inc["total"]
+            node["per"] = node["win"] / node["total"]
 
     def __search_node(self, board, move):
-        _board = copy.deepcopy(board)
+        _board = Board(board)
         _board.move(move)
         node = self.tree.get(_board.get_board(), None)
         return node
@@ -99,5 +124,6 @@ class TreeSearch(object):
             if wins >= final["per"]:
                 final["per"], final["win"], final["total"], final["move"] = \
                     wins, node["win"], node["total"], move
-        print "== probability is %d. %d/%d ==" % (final["per"], final["win"], final["total"])
-        return final["move"]
+        msg_pro = "== probability is %d. %d/%d ==" % (final["per"], final["win"], final["total"])
+        print msg_pro
+        return final["move"], msg_pro
